@@ -78,7 +78,7 @@ Também são realizados experimentos considerando diferentes quantidades de foto
 
 ## 6. Notebook
 
-**Arquivo:** `Perdigueiro_VGG16_Triplet_KFold_GitHub_v2.ipynb`
+**Arquivo:** `Perdigueiro_VGG16_Triplet_KFold.ipynb`
 
 O notebook reúne os procedimentos de preparação dos dados, construção do modelo, treinamento, validação cruzada, avaliação e exportação.
 
