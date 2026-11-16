@@ -24,10 +24,13 @@ class Rcaes_Chat {
 		return add_query_arg( 'conversa', (int) $match_id, Rcaes_Seguranca::pagina_url( 'conversas' ) );
 	}
 
-	/** A caixa flutuante aparece para tutores logados e verificados. */
+	/** A caixa flutuante aparece para tutores logados e verificados e para administradores. */
 	public static function dock_ativo() {
 		if ( ! is_user_logged_in() || ! Rcaes_Seguranca::usuario_verificado() ) {
 			return false;
+		}
+		if ( current_user_can( 'manage_options' ) ) {
+			return true;
 		}
 		$u = wp_get_current_user();
 		return $u && in_array( 'rcaes_tutor', (array) $u->roles, true );
@@ -73,6 +76,15 @@ class Rcaes_Chat {
 	/** Cão do outro participante. */
 	private static function cao_do_outro( $m, $uid ) {
 		return Rcaes_DB::cao( 'perdido' === Rcaes_Lista::lado( $m, $uid ) ? $m->cao_encontrado_id : $m->cao_perdido_id );
+	}
+
+	/** Estado do "marcar como resolvido" para este usuário: nenhum | meu (eu pedi) | outro (a outra pessoa pediu). */
+	private static function estado_resgate( $m, $uid ) {
+		$pediu = (int) $m->resgate_por;
+		if ( 0 === $pediu ) {
+			return 'nenhum';
+		}
+		return $pediu === (int) $uid ? 'meu' : 'outro';
 	}
 
 	/** Chave do "está digitando" (expira sozinha em poucos segundos). */
@@ -457,6 +469,12 @@ class Rcaes_Chat {
 			'permission_callback' => $participa,
 		) );
 
+		register_rest_route( 'rcaes/v1', '/resgate/(?P<id>\d+)', array(
+			'methods'             => 'POST',
+			'callback'            => array( __CLASS__, 'rest_resgate' ),
+			'permission_callback' => $participa,
+		) );
+
 		register_rest_route( 'rcaes/v1', '/pedido/(?P<id>\d+)/visto', array(
 			'methods'             => 'POST',
 			'callback'            => array( __CLASS__, 'rest_pedido_visto' ),
@@ -485,7 +503,45 @@ class Rcaes_Chat {
 		return rest_ensure_response( array(
 			'mensagens' => $out,
 			'digitando' => (bool) get_transient( self::chave_digitando( $mid, self::outro_uid( $m, $uid ) ) ),
+			'resgate'   => $m ? self::estado_resgate( $m, $uid ) : 'nenhum',
 		) );
+	}
+
+	/** "Marcar como resolvido" pela caixa flutuante: pedir / cancelar / confirmar (mesmas regras da página de conversas). */
+	public static function rest_resgate( WP_REST_Request $req ) {
+		$uid = get_current_user_id();
+		$mid = absint( $req['id'] );
+		$m   = self::conversa_do_usuario( $mid, $uid );
+		if ( ! $m ) {
+			return new WP_Error( 'rcaes_indisponivel', 'Conversa indisponível.', array( 'status' => 404 ) );
+		}
+		if ( ! Rcaes_Seguranca::permitir( 'resgate_rest_' . $uid, 30, MINUTE_IN_SECONDS ) ) {
+			return new WP_Error( 'rcaes_limite', 'Muitas tentativas. Aguarde um pouco.', array( 'status' => 429 ) );
+		}
+		$acao   = sanitize_key( (string) $req->get_param( 'acao' ) );
+		$pediu  = (int) $m->resgate_por;
+		$indisp = new WP_Error( 'rcaes_estado', 'Esta ação não está mais disponível.', array( 'status' => 409 ) );
+
+		if ( 'pedir' === $acao ) {
+			if ( $pediu || ! Rcaes_DB::definir_resgate( $mid, $uid ) ) {
+				return $indisp;
+			}
+			return rest_ensure_response( array( 'ok' => true, 'resgate' => 'meu', 'encerrada' => false ) );
+		}
+		if ( 'cancelar' === $acao ) {
+			if ( ! $pediu ) {
+				return $indisp;
+			}
+			Rcaes_DB::definir_resgate( $mid, 0 ); // quem pediu cancela; quem recebeu responde "Ainda não"
+			return rest_ensure_response( array( 'ok' => true, 'resgate' => 'nenhum', 'encerrada' => false ) );
+		}
+		if ( 'confirmar' === $acao ) {
+			if ( ! $pediu || $pediu === $uid || ! self::finalizar_resgate( $m ) ) { // só a OUTRA pessoa confirma
+				return $indisp;
+			}
+			return rest_ensure_response( array( 'ok' => true, 'resgate' => 'nenhum', 'encerrada' => true ) );
+		}
+		return new WP_Error( 'rcaes_acao', 'Ação inválida.', array( 'status' => 400 ) );
 	}
 
 	public static function rest_enviar( WP_REST_Request $req ) {
@@ -550,7 +606,11 @@ class Rcaes_Chat {
 			$outro_uid = self::outro_uid( $m, $uid );
 			$cao       = self::cao_do_outro( $m, $uid );
 			$n         = (int) $m->nao_lidas;
+			$resgate   = self::estado_resgate( $m, $uid );
 			$total    += $n;
+			if ( 'outro' === $resgate ) {
+				++$total; // a outra pessoa pediu para marcar como resolvido: falta a sua confirmação
+			}
 			$conversas[] = array(
 				'id'        => (int) $m->id,
 				'nome'      => Rcaes_Seguranca::nome_publico( $outro_uid ),
@@ -559,6 +619,7 @@ class Rcaes_Chat {
 				'quando'    => $m->ultima ? get_date_from_gmt( $m->ultima, 'd/m H:i' ) : '',
 				'nao_lidas' => $n,
 				'digitando' => (bool) get_transient( self::chave_digitando( $m->id, $outro_uid ) ),
+				'resgate'   => $resgate,
 				'url'       => self::url( (int) $m->id ),
 			);
 		}

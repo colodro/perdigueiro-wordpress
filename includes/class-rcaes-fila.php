@@ -61,6 +61,7 @@ class Rcaes_Fila {
 			return;
 		}
 		Rcaes_DB::atualizar_cao( $cao_id, array( 'status' => 'ativo', 'processado_em' => Rcaes_DB::agora(), 'proxima_tentativa' => null ) );
+		delete_transient( 'rcaes_numeros' ); // o cão passou a contar como "ativo": atualiza o contador público na hora
 		Rcaes_Email::processo_concluido( $cao, $res['total'] );
 		foreach ( $res['contrapartes'] as $outro_id ) {
 			$outro = Rcaes_DB::cao( $outro_id );

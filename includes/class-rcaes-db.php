@@ -194,19 +194,21 @@ class Rcaes_DB {
 
 	/**
 	 * Cães do tipo oposto, ativos e compatíveis em porte, raça e cor.
-	 * "srd"/"outra" (raça) e "outra"/"manchado" (cor) funcionam como curinga.
+	 * "nao-informado" (porte) também funciona como curinga.
+	 * "srd"/"outra" (raça) e "nao-informado"/"outra"/"manchado" (cor) funcionam como curinga.
 	 */
 	public static function compativeis( $tipo, $raca, $porte, $cor, $excluir_user, $limite ) {
 		global $wpdb;
 		return $wpdb->get_results(
 			$wpdb->prepare(
 				'SELECT * FROM ' . self::t( 'caes' ) . " WHERE status = 'ativo' AND tipo = %d AND user_id <> %d
-				 AND porte = %s
+				 AND ( porte = %s OR porte = 'nao-informado' OR %s = 'nao-informado' )
 				 AND ( raca = %s OR raca IN ('srd','outra') OR %s IN ('srd','outra') )
-				 AND ( cor = %s OR cor IN ('outra','manchado') OR %s IN ('outra','manchado') )
+				 AND ( cor = %s OR cor IN ('nao-informado','outra','manchado') OR %s IN ('nao-informado','outra','manchado') )
 				 ORDER BY id DESC LIMIT %d",
 				(int) $tipo,
 				(int) $excluir_user,
+				$porte,
 				$porte,
 				$raca,
 				$raca,
@@ -435,12 +437,13 @@ class Rcaes_DB {
 	/* ---------------------------------------------------------------- listas públicas */
 
 	/** Só cães que o tutor marcou como públicos. 'recuperados' = resolvidos com reencontro. */
+	/** Em "recuperados" entram só os cadastros de cão PERDIDO (tipo 0): o cão "encontrado" do mesmo reencontro é ignorado para não duplicar o cartão/foto. */
 	public static function listar_publicos( $lista, $limite ) {
 		global $wpdb;
 		$t = self::t( 'caes' );
 		if ( 'recuperados' === $lista ) {
 			$sql = $wpdb->prepare(
-				"SELECT * FROM {$t} WHERE publico = 1 AND status = 'resolvido' AND desfecho IN ('pelo_site','outro_meio') ORDER BY resolvido_em DESC LIMIT %d",
+				"SELECT * FROM {$t} WHERE publico = 1 AND tipo = 0 AND status = 'resolvido' AND desfecho IN ('pelo_site','outro_meio') ORDER BY resolvido_em DESC LIMIT %d",
 				(int) $limite
 			);
 		} else {

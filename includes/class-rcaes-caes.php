@@ -18,9 +18,9 @@ class Rcaes_Caes {
 				'dachshund' => 'Dachshund (salsicha)', 'maltes' => 'Maltês', 'spitz' => 'Spitz Alemão (lulu)', 'chihuahua' => 'Chihuahua',
 				'boxer' => 'Boxer', 'beagle' => 'Beagle', 'outra' => 'Outra raça',
 			),
-			'porte'  => array( 'pequeno' => 'Pequeno (até ~10 kg)', 'medio' => 'Médio (~10 a 25 kg)', 'grande' => 'Grande (acima de ~25 kg)' ),
+			'porte'  => array( 'nao-informado' => 'Não informado', 'pequeno' => 'Pequeno (até ~10 kg)', 'medio' => 'Médio (~10 a 25 kg)', 'grande' => 'Grande (acima de ~25 kg)' ),
 			'cor'    => array(
-				'preto' => 'Preto', 'branco' => 'Branco', 'caramelo' => 'Caramelo', 'marrom' => 'Marrom', 'cinza' => 'Cinza',
+				'nao-informado' => 'Não informado', 'preto' => 'Preto', 'branco' => 'Branco', 'caramelo' => 'Caramelo', 'marrom' => 'Marrom', 'cinza' => 'Cinza',
 				'tigrado' => 'Tigrado', 'manchado' => 'Duas ou mais cores', 'outra' => 'Outra',
 			),
 			'status' => array(
@@ -127,7 +127,7 @@ class Rcaes_Caes {
 
 			<div id="rcaes-previa" class="rcaes-previa" hidden>
 				<h4>Cães já cadastrados com características parecidas</h4>
-				<p class="rcaes-peq">Se algum deles parecer ser o seu (ou o dono do que você encontrou), marque. Depois do processamento, ele aparecerá na sua lista para você pedir contato.</p>
+				<p class="rcaes-peq">Se algum deles parecer ser o seu (ou o que você encontrou), marque. Depois do processamento, ele aparecerá na sua lista para você pedir contato.</p>
 				<div id="rcaes-previa-itens" class="rcaes-grade"></div>
 			</div>
 
