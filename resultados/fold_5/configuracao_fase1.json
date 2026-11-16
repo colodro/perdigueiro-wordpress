@@ -1,0 +1,17 @@
+{
+  "fold": 5,
+  "fase": 1,
+  "epocas": 10,
+  "passos_por_epoca": 625,
+  "lotes_validacao": 150,
+  "batch_size": 32,
+  "P": 8,
+  "K": 4,
+  "seed": 42,
+  "seed_validacao": 10047,
+  "learning_rate": 0.0001,
+  "margem_triplet": 0.2,
+  "backbone": "VGG16",
+  "pesos_iniciais": "ImageNet",
+  "backbone_congelado": true
+}

@@ -1,0 +1,11 @@
+{
+  "fold": 1,
+  "batch_size": 32,
+  "passos_treino": 617,
+  "passos_validacao": 150,
+  "imagens_elegiveis_treino": 19742,
+  "imagens_elegiveis_validacao": 4772,
+  "epocas_fase1": 10,
+  "epocas_fase2": 10,
+  "validacao_fixa": true
+}

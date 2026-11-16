@@ -1,0 +1,41 @@
+{
+    "experimento": "tcc1_semihard_kfold",
+    "fold": 1,
+    "seed": 42,
+    "dataset": {
+        "desenvolvimento": 0.7,
+        "teste_independente": 0.3,
+        "n_folds": 5,
+        "separacao_por": "identidade"
+    },
+    "modelo": {
+        "backbone": "VGG16",
+        "pesos_iniciais": "imagenet",
+        "input_shape": [
+            224,
+            224,
+            3
+        ],
+        "embedding_dim": 128,
+        "normalizacao": "L2",
+        "backbone_congelado_fase1": true
+    },
+    "mineracao": {
+        "tipo": "semi-hard_in_batch",
+        "P": 8,
+        "K": 4,
+        "batch_size": 32,
+        "margem": 0.2,
+        "distancia": "euclidiana_quadratica",
+        "fallback": "negativo_mais_proximo"
+    },
+    "treinamento": {
+        "epocas_fase1": 10,
+        "epocas_fase2": 10,
+        "learning_rate_fase1": 0.0001,
+        "learning_rate_fase2": 1e-05,
+        "otimizador": "Adam",
+        "fine_tuning": "block5",
+        "early_stopping_patience": 4
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "fold": 2,
+    "seed": 42,
+    "P": 8,
+    "K": 4,
+    "batch_size": 32,
+    "lotes_validacao": 150,
+    "aparicoes_validacao": 4800,
+    "imagens_distintas_validacao": 2915,
+    "identidades_distintas_validacao": 502,
+    "reposicao_quando_imagens_insuficientes": true,
+    "amostragem_identidades": "uniforme_sem_reposicao_por_lote",
+    "amostragem_imagens": "sem_reposicao_se_possivel",
+    "validacao_fixa": true
+}

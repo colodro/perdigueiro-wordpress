@@ -1,0 +1,12 @@
+{
+    "fold": 1,
+    "modelo": "VGG16",
+    "embedding_dim": 128,
+    "loss": "triplet_semihard",
+    "margem": 0.2,
+    "fase1_melhor_epoca": 9,
+    "fase2_melhor_epoca": 9,
+    "fase2_melhor_loss_validacao": 0.0133142266312885,
+    "arquivo_pesos": "/content/drive/MyDrive/TCC_Caes/experimentos/tcc1_kfold/checkpoints/fold_1/modelo_final_fold1.weights.h5",
+    "sha256": "38d47f2a45bca6d467f63dee295200f742f134f4f5b28210c608f0f38bd45b21"
+}

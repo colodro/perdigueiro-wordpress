@@ -1,0 +1,9 @@
+{
+  "fold": 1,
+  "fase": 1,
+  "ultima_epoca_concluida": 10,
+  "melhor_loss_validacao": 0.018864388554065956,
+  "epoca_melhor_modelo": 9,
+  "epocas_sem_melhoria": 1,
+  "status": "em_andamento"
+}

@@ -1,0 +1,11 @@
+{
+    "fold": 5,
+    "fase": 2,
+    "epoca": 1,
+    "lotes_processados": 625,
+    "loss_treino": 0.008130110800266266,
+    "loss_validacao": 0.017674559727311134,
+    "iteracoes_adam_atual": 0,
+    "data": "2026-11-11T16:32:41.379821",
+    "observacao": "Backup dos pesos após a primeira época. O estado do otimizador utilizado no treinamento ainda precisa ser verificado."
+}

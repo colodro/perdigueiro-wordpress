@@ -1,0 +1,123 @@
+{
+    "experimento": "TCC1_VGG16_Triplet_KFold",
+    "fold": 1,
+    "data_consolidacao_utc": "2026-11-08T03:12:11.596867+00:00",
+    "modelo": {
+        "backbone": "VGG16",
+        "embedding_dim": 128,
+        "normalizacao": "L2",
+        "loss": "Triplet Loss semi-hard",
+        "margem": 0.2,
+        "preprocessamento": "tf.keras.applications.vgg16.preprocess_input",
+        "melhor_loss_validacao": 0.013314226631288572
+    },
+    "validacao": {
+        "imagens": 4848,
+        "identidades": 577,
+        "separacao_por_identidade": true
+    },
+    "verificacao": {
+        "pares_positivos": 23193,
+        "pares_negativos": 23193,
+        "roc_auc": 0.9931512361717785,
+        "eer_aproximado": 0.036886129435605555,
+        "limiar_eer": 1.1005711555480957,
+        "acuracia": 0.9631138705643945,
+        "precisao": 0.9631338392549155,
+        "recall": 0.9630923123356185,
+        "f1_score": 0.9631130753476339
+    },
+    "recuperacao": {
+        "protocolo": "image_to_image_leave_one_out",
+        "hit_at_1": 0.9238861386138614,
+        "hit_at_5": 0.9738036303630363,
+        "hit_at_10": 0.9857673267326733,
+        "map": 0.6831934571213018,
+        "mrr": 0.9462491869926453
+    },
+    "por_dataset": [
+        {
+            "dataset": "DogFaceNet",
+            "imagens": 1113,
+            "identidades": 195,
+            "hit_1": 0.8508535489667565,
+            "hit_5": 0.9460916442048516,
+            "hit_10": 0.9712488769092544,
+            "map": 0.5918813306939973,
+            "mrr": 0.8933187502632135
+        },
+        {
+            "dataset": "YTBB",
+            "imagens": 3735,
+            "identidades": 382,
+            "hit_1": 0.9456492637215528,
+            "hit_5": 0.9820615796519412,
+            "hit_10": 0.9900937081659972,
+            "map": 0.7104037373659042,
+            "mrr": 0.962022049526005
+        }
+    ],
+    "auditoria_erros": [
+        {
+            "dataset": "DogFaceNet",
+            "consultas": 1113,
+            "erros": 166,
+            "taxa_erro": 0.1491464510332434,
+            "map": 0.5918813306939973
+        },
+        {
+            "dataset": "YTBB",
+            "consultas": 3735,
+            "erros": 203,
+            "taxa_erro": 0.0543507362784471,
+            "map": 0.7104037373659042
+        }
+    ],
+    "simulacao_cadastro": {
+        "identidades_elegiveis": 513,
+        "repeticoes": 5,
+        "resultados": [
+            {
+                "fotos_cadastro": 1,
+                "hit1_medio": 0.7637426900584796,
+                "hit1_desvio": 0.0164483610992038,
+                "hit5_medio": 0.9076023391812866,
+                "hit10_medio": 0.9407407407407408,
+                "imagens_galeria": 513
+            },
+            {
+                "fotos_cadastro": 2,
+                "hit1_medio": 0.8467836257309941,
+                "hit1_desvio": 0.011416413617424,
+                "hit5_medio": 0.9504873294346978,
+                "hit10_medio": 0.9680311890838208,
+                "imagens_galeria": 1026
+            },
+            {
+                "fotos_cadastro": 3,
+                "hit1_medio": 0.8884990253411307,
+                "hit1_desvio": 0.0148711353783708,
+                "hit5_medio": 0.9610136452241717,
+                "hit10_medio": 0.9773879142300196,
+                "imagens_galeria": 1539
+            },
+            {
+                "fotos_cadastro": 4,
+                "hit1_medio": 0.9048732943469784,
+                "hit1_desvio": 0.0115652218122349,
+                "hit5_medio": 0.9668615984405458,
+                "hit10_medio": 0.9812865497076024,
+                "imagens_galeria": 2052
+            }
+        ]
+    },
+    "limitacoes": [
+        "Resultados restritos ao fold 1.",
+        "Teste independente de 30% ainda não avaliado.",
+        "Limiar de verificação escolhido na validação.",
+        "Pares negativos amostrados e balanceados.",
+        "Recuperação avaliada com correspondência presente.",
+        "Simulação de cadastro restrita a identidades com pelo menos cinco imagens.",
+        "Possível correlação entre imagens provenientes de vídeos."
+    ]
+}

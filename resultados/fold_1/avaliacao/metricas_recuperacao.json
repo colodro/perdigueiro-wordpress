@@ -1,0 +1,17 @@
+{
+    "experimento": "TCC1_VGG16_Triplet_KFold",
+    "fold": 1,
+    "data_utc": "2026-11-08T02:56:38.670945+00:00",
+    "protocolo": "image_to_image_leave_one_out",
+    "imagens": 4848,
+    "identidades": 577,
+    "consultas_validas": 4848,
+    "map": 0.6831934571213018,
+    "mrr": 0.9462491869926453,
+    "hit_at_1": 0.9238861386138614,
+    "recall_at_1": 0.10630918350801895,
+    "hit_at_5": 0.9738036303630363,
+    "recall_at_5": 0.42671807453247534,
+    "hit_at_10": 0.9857673267326733,
+    "recall_at_10": 0.6103064267892724
+}

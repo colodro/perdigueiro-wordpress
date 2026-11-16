@@ -1,0 +1,29 @@
+{
+    "experimento": "TCC1_VGG16_Triplet_KFold",
+    "fold": 1,
+    "data_utc": "2026-11-08T03:01:06.032700+00:00",
+    "protocolo": "image_to_image_leave_one_out",
+    "galeria": "global_4848_imagens",
+    "resultados": [
+        {
+            "dataset": "DogFaceNet",
+            "imagens": 1113,
+            "identidades": 195,
+            "hit_1": 0.8508535489667565,
+            "hit_5": 0.9460916442048517,
+            "hit_10": 0.9712488769092543,
+            "map": 0.5918813306939973,
+            "mrr": 0.8933187502632135
+        },
+        {
+            "dataset": "YTBB",
+            "imagens": 3735,
+            "identidades": 382,
+            "hit_1": 0.9456492637215529,
+            "hit_5": 0.9820615796519411,
+            "hit_10": 0.9900937081659973,
+            "map": 0.7104037373659042,
+            "mrr": 0.962022049526005
+        }
+    ]
+}

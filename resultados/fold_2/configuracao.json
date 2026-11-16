@@ -1,0 +1,44 @@
+{
+    "experimento": "TCC1_VGG16_Triplet_KFold",
+    "fold": 2,
+    "seed": 42,
+    "data_inicializacao_utc": "2026-11-08T03:15:37.943408+00:00",
+    "modelo": {
+        "backbone": "VGG16",
+        "pesos_iniciais": "imagenet",
+        "input_shape": [
+            224,
+            224,
+            3
+        ],
+        "embedding_dim": 128,
+        "normalizacao": "L2",
+        "parametros": 14878912,
+        "backbone_congelado_fase1": true
+    },
+    "mineracao": {
+        "tipo": "semi-hard_in_batch",
+        "P": 8,
+        "K": 4,
+        "batch_size": 32,
+        "margem": 0.2,
+        "distancia": "euclidiana_quadratica",
+        "fallback": "negativo_mais_proximo"
+    },
+    "treinamento": {
+        "epocas_fase1": 10,
+        "epocas_fase2": 10,
+        "learning_rate_fase1": 0.0001,
+        "learning_rate_fase2": 1e-05,
+        "otimizador": "Adam",
+        "fine_tuning": "block5",
+        "early_stopping_patience": 4
+    },
+    "preprocessamento": "tf.keras.applications.vgg16.preprocess_input",
+    "divisao": {
+        "identidades_treino": 2305,
+        "identidades_validacao": 576,
+        "imagens_treino": 19662,
+        "imagens_validacao": 5209
+    }
+}

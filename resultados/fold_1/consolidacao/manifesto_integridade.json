@@ -1,0 +1,37 @@
+{
+    "pesos_modelo": {
+        "caminho": "/content/drive/MyDrive/TCC_Caes/experimentos/tcc1_kfold/checkpoints/fold_1/modelo_final_fold1.weights.h5",
+        "tamanho_bytes": 59583784,
+        "sha256": "38d47f2a45bca6d467f63dee295200f742f134f4f5b28210c608f0f38bd45b21"
+    },
+    "embeddings": {
+        "caminho": "/content/drive/MyDrive/TCC_Caes/experimentos/tcc1_kfold/resultados/fold_1/avaliacao/embeddings_validacao.npy",
+        "tamanho_bytes": 2482304,
+        "sha256": "3e25d3b4c56c7d9c50ac8540d9eef7129d52f6a14a8a2f8dc088aa8892525f91"
+    },
+    "metadados": {
+        "caminho": "/content/drive/MyDrive/TCC_Caes/experimentos/tcc1_kfold/resultados/fold_1/avaliacao/metadados_validacao.csv",
+        "tamanho_bytes": 1033832,
+        "sha256": "b841dc35ab1722a84468dd3eb6e5706f5c35ae47616644f2ee92d385f61e1b85"
+    },
+    "metricas_verificacao": {
+        "caminho": "/content/drive/MyDrive/TCC_Caes/experimentos/tcc1_kfold/resultados/fold_1/avaliacao/metricas_verificacao.json",
+        "tamanho_bytes": 820,
+        "sha256": "553d14de03ccb44c2f1b5a6ae98f09d924faebcb1dfd32e8e579b6c73434560f"
+    },
+    "metricas_recuperacao": {
+        "caminho": "/content/drive/MyDrive/TCC_Caes/experimentos/tcc1_kfold/resultados/fold_1/avaliacao/metricas_recuperacao.json",
+        "tamanho_bytes": 532,
+        "sha256": "a68ba6e68101ecd338653e07288c7724c42f855b58df3848b12815b1d64ea7aa"
+    },
+    "simulacao_cadastro": {
+        "caminho": "/content/drive/MyDrive/TCC_Caes/experimentos/tcc1_kfold/resultados/fold_1/avaliacao/simulacao_cadastro_resumo.csv",
+        "tamanho_bytes": 416,
+        "sha256": "7059b82866872799f32243985fde732cf5c69bd75cedd2863849227743fd4a8a"
+    },
+    "consolidado": {
+        "caminho": "/content/drive/MyDrive/TCC_Caes/experimentos/tcc1_kfold/resultados/fold_1/consolidacao/resultados_fold1.json",
+        "tamanho_bytes": 4118,
+        "sha256": "7d7522f4849db8ff7335c3c657db1d5abff2642fb74c0c2a02d7fdeda7fecbad"
+    }
+}

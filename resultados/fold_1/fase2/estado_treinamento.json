@@ -1,0 +1,11 @@
+{
+    "fold": 1,
+    "fase": 2,
+    "ultima_epoca_concluida": 10,
+    "melhor_loss_validacao": 0.013314226631288572,
+    "epoca_melhor_modelo": 9,
+    "epocas_sem_melhoria": 1,
+    "status": "em_andamento",
+    "epoca_origem_fase1": 9,
+    "seed_gerador": 2042
+}

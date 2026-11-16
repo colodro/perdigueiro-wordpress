@@ -1,0 +1,28 @@
+{
+    "experimento": "TCC1_VGG16_Triplet_KFold",
+    "fold": 1,
+    "data_utc": "2026-11-08T02:55:56.106869+00:00",
+    "seed_avaliacao": 42,
+    "imagens": 4848,
+    "identidades": 577,
+    "pares_positivos": 23193,
+    "pares_negativos": 23193,
+    "roc_auc": 0.9931512361717785,
+    "eer_aproximado": 0.036886129435605555,
+    "limiar_distancia_eer": 1.1005711555480957,
+    "acuracia": 0.9631138705643945,
+    "precisao": 0.9631338392549155,
+    "recall": 0.9630923123356185,
+    "f1_score": 0.9631130753476339,
+    "matriz_confusao": [
+        [
+            22338,
+            855
+        ],
+        [
+            856,
+            22337
+        ]
+    ],
+    "observacao": "Métricas de desenvolvimento no fold 1. Pares negativos amostrados sem reposição. Limiar selecionado no próprio conjunto de validação."
+}

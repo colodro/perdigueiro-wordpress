@@ -1,0 +1,9 @@
+{
+    "fold": 5,
+    "fase": 2,
+    "epoca_recuperada": 1,
+    "epoca_retomada": 2,
+    "iteracoes_adam_no_checkpoint": 0,
+    "motivo": "O estado do otimizador utilizado na primeira época não foi recuperado.",
+    "procedimento": "Pesos da primeira época preservados. Novo Adam inicializado com learning rate 1e-5 antes da segunda época."
+}
