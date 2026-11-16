@@ -537,3 +537,51 @@
 	.rcaes-destaque-cartao { left: .6rem; right: auto; bottom: -.4rem; }
 	.rcaes-destaque-selo { top: .8rem; right: .8rem; font-size: .82rem; }
 }
+
+/* ---------- 16. Caixa flutuante: itens da lista e "marcar como resolvido" (v1.4.8) ----------
+   Os itens são <button>: os temas costumam estilizar "button" (cor, borda, caixa alta, hover),
+   por isso as regras abaixo são mais específicas e usam !important nas propriedades que os temas mais sobrescrevem. */
+.rcaes-janela .rcaes-item {
+	box-sizing: border-box !important; display: flex !important; align-items: center !important; gap: .75rem !important;
+	width: 100% !important; margin: 0 !important; padding: .8rem 1rem !important; text-align: left !important;
+	background: #fff !important; color: var(--rc-texto) !important; border: 0 !important; border-bottom: 1px solid var(--rc-borda) !important;
+	border-radius: 0 !important; box-shadow: none !important; text-transform: none !important; letter-spacing: normal !important;
+	font-family: var(--rc-fonte) !important; font-size: .9rem !important; font-weight: 400 !important; line-height: 1.3 !important;
+	min-height: 0 !important; height: auto !important; text-decoration: none !important; cursor: pointer;
+	transition: background .15s;
+}
+.rcaes-janela .rcaes-item:hover, .rcaes-janela .rcaes-item:focus-visible { background: var(--rc-fundo) !important; color: var(--rc-texto) !important; outline: none; }
+.rcaes-janela .rcaes-item:focus-visible { box-shadow: inset 0 0 0 2px rgba(255, 106, 49, .55) !important; }
+.rcaes-janela .rcaes-item .rcaes-avatar { width: 40px; height: 40px; background: var(--rc-azul); color: #fff; font-size: 1rem; }
+.rcaes-janela .rcaes-item-nome { display: block; font-family: var(--rc-fonte-titulo); font-weight: 600; font-size: .95rem; color: var(--rc-azul); }
+.rcaes-janela .rcaes-item-prev { display: block; margin-top: .1rem; font-size: .82rem; color: var(--rc-suave); }
+.rcaes-janela .rcaes-item-meta { font-size: .72rem; color: var(--rc-suave); white-space: nowrap; }
+
+/* Pedido de contato novo: faixa azul clara com barra lateral, em vez de bloco azul sólido */
+.rcaes-janela .rcaes-item.rcaes-item-azul { background: #eaf1ff !important; box-shadow: inset 4px 0 0 var(--rc-info) !important; color: var(--rc-texto) !important; }
+.rcaes-janela .rcaes-item.rcaes-item-azul:hover { background: #dbe8ff !important; }
+.rcaes-janela .rcaes-item-azul .rcaes-item-nome { font-weight: 700; }
+.rcaes-janela .rcaes-item-azul .rcaes-item-prev { color: var(--rc-info); font-weight: 500; }
+.rcaes-janela .rcaes-item-azul .rcaes-item-meta { color: var(--rc-suave); }
+.rcaes-janela .rcaes-item-azul .rcaes-avatar { background: var(--rc-info); color: #fff; }
+.rcaes-janela .rcaes-item.rcaes-item-novo { background: #f3f7ff !important; }
+.rcaes-janela .rcaes-item-novo .rcaes-item-nome { font-weight: 700; }
+.rcaes-item-novo-tag {
+	display: inline-block; padding: .1rem .5rem; border-radius: 999px; background: var(--rc-laranja); color: #fff;
+	font-family: var(--rc-fonte-titulo); font-size: .68rem; font-weight: 700; line-height: 1.4; text-transform: uppercase; letter-spacing: .03em;
+}
+.rcaes-janela .rcaes-item-alerta { color: var(--rc-amar); font-weight: 600; }
+
+/* "Marcar como resolvido" dentro da conversa da caixa flutuante */
+.rcaes-janela-thread > .rcaes-resgate { flex: 0 0 auto; }
+.rcaes-resgate {
+	display: flex; flex-direction: column; gap: .5rem; margin: .45rem 0 0; padding: .6rem .75rem; font-size: .82rem; line-height: 1.35;
+	background: var(--rc-fundo); border: 1px solid var(--rc-borda); border-radius: var(--rc-raio-sm); color: var(--rc-texto);
+}
+.rcaes-resgate[hidden] { display: none; }
+.rcaes-resgate p { margin: 0 !important; }
+.rcaes-resgate-botoes { display: flex; flex-wrap: wrap; gap: .5rem; }
+.rcaes-resgate-botoes .rcaes-btn:disabled { opacity: .6; cursor: default; }
+.rcaes-resgate-meu { background: var(--rc-info-bg); border-color: #93c5fd; color: #1e40af; }
+.rcaes-resgate-outro { background: var(--rc-amar-bg); border-color: #fcd34d; color: var(--rc-amar); }
+.rcaes-resgate-nenhum { background: transparent; border-style: dashed; padding: .4rem .5rem; }

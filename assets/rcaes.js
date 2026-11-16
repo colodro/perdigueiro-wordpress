@@ -205,6 +205,22 @@
     fecharBtn.addEventListener('click', fecharJanela);
     document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape' && !janela.hidden) { fecharJanela(); } });
 
+    // Tela final (conversa encerrada / resolvida). Fica na tela até a pessoa voltar para a lista.
+    function mostrarFim(msg) {
+      atualizar(); // renova a lista em segundo plano (vista = 'fim' não redesenha a janela)
+      novaVista('Conversa encerrada', 'rcaes-janela-thread');
+      vista = 'fim';
+      corpo.appendChild(el('p', '', msg));
+      var voltar = el('button', 'rcaes-btn rcaes-btn-peq', 'Voltar às mensagens');
+      voltar.type = 'button';
+      voltar.addEventListener('click', function () {
+        vista = 'lista';
+        if (ultimo) { renderLista(ultimo); }
+        atualizar();
+      });
+      corpo.appendChild(voltar);
+    }
+
     function novaVista(txt, classe) {
       parar();
       corpo.textContent = '';
@@ -242,16 +258,84 @@
       formModal.appendChild(ta);
       formModal.appendChild(enviarBtn);
 
+      // "Marcar como resolvido": sempre visível na conversa; a outra pessoa confirma aqui mesmo.
+      var barra = el('div', 'rcaes-resgate');
+      barra.hidden = true;
+      var estadoResgate = null;
+
+      function renderResgate(r) {
+        if (r === estadoResgate) { return; }
+        estadoResgate = r;
+        barra.textContent = '';
+        barra.className = 'rcaes-resgate rcaes-resgate-' + r;
+        barra.hidden = false;
+        var botoes = el('div', 'rcaes-resgate-botoes');
+        var botao = function (acao, rotulo, cls, confirma) {
+          var b = el('button', 'rcaes-btn rcaes-btn-peq ' + cls, rotulo);
+          b.type = 'button';
+          b.addEventListener('click', function () {
+            if (confirma && !window.confirm(confirma)) { return; }
+            var todos = barra.querySelectorAll('button');
+            for (var i = 0; i < todos.length; i++) { todos[i].disabled = true; }
+            enviar('resgate/' + c.id, { acao: acao }).then(function (res) {
+              if (!res.ok) {
+                for (var j = 0; j < todos.length; j++) { todos[j].disabled = false; }
+                erro.textContent = (res.data && res.data.message) || 'Não foi possível concluir. Tente novamente.';
+                erro.hidden = false;
+                tick();
+                return;
+              }
+              erro.hidden = true;
+              if (res.data.encerrada) {
+                mostrarFim('Pronto! Os cadastros dos dois cães foram marcados como resolvidos e a conversa foi encerrada. Obrigado por usar o Reencontro de Cães.');
+                return;
+              }
+              renderResgate(res.data.resgate || 'nenhum');
+              atualizar();
+            });
+          });
+          return b;
+        };
+        if (r === 'meu') {
+          barra.appendChild(el('p', '', 'Você marcou como resolvido. Aguardando ' + c.nome + ' confirmar.'));
+          botoes.appendChild(botao('cancelar', 'Cancelar pedido', 'rcaes-btn-sec'));
+        } else if (r === 'outro') {
+          barra.appendChild(el('p', '', c.nome + ' marcou este cão como resolvido. Confirmar encerra a conversa e marca os dois cadastros como resolvidos.'));
+          botoes.appendChild(botao('confirmar', 'Confirmar', '', 'Confirmar que o cão foi reencontrado? A conversa será encerrada e os cadastros dos dois cães viram resolvidos.'));
+          botoes.appendChild(botao('cancelar', 'Ainda não', 'rcaes-btn-sec'));
+        } else {
+          botoes.appendChild(botao('pedir', 'Marcar como resolvido', 'rcaes-btn-sec', 'Marcar como resolvido? A outra pessoa precisará confirmar.'));
+        }
+        barra.appendChild(botoes);
+      }
+
+      var verificando = false;
+      function verificarEncerrada() {
+        if (verificando) { return; }
+        verificando = true;
+        get(R.rest + 'caixa', null).then(function (d) {
+          verificando = false;
+          if (!d || estado.chave !== chave) { return; }
+          ultimo = d;
+          setBadge(d.total);
+          var existe = (d.conversas || []).some(function (x) { return x.id === c.id; });
+          if (!existe) { mostrarFim('Esta conversa foi encerrada.'); }
+        });
+      }
+
       corpo.appendChild(msgsModal);
       corpo.appendChild(digitandoModal);
       corpo.appendChild(erro);
+      corpo.appendChild(barra);
       corpo.appendChild(formModal);
 
       var ultimoId = 0;
       var tick = function () {
         if (document.hidden) { return; }
         get(R.rest + 'mensagens/' + c.id + '?depois=' + ultimoId, null).then(function (r) {
-          if (!r || estado.chave !== chave) { return; }
+          if (estado.chave !== chave) { return; }
+          if (!r) { verificarEncerrada(); return; } // erro de acesso: a conversa pode ter sido encerrada pela outra pessoa
+          renderResgate(r.resgate || 'nenhum');
           (r.mensagens || []).forEach(function (m) {
             msgsModal.appendChild(bolhaMsg(m));
             if (m.id > ultimoId) { ultimoId = m.id; }
@@ -348,17 +432,21 @@
         corpoItem.appendChild(el('span', 'rcaes-item-nome', p.nome));
         corpoItem.appendChild(el('span', 'rcaes-item-prev', p.nova ? 'Pediu contato' : 'Pedido de contato pendente'));
         b.appendChild(corpoItem);
-        b.appendChild(el('span', 'rcaes-item-meta', p.quando));
+        var dirP = el('span', 'rcaes-item-direita');
+        dirP.appendChild(el('span', 'rcaes-item-meta', p.quando));
+        if (p.nova) { dirP.appendChild(el('span', 'rcaes-item-novo-tag', 'Novo')); }
+        b.appendChild(dirP);
         b.addEventListener('click', function () { abrirPedido(p); });
         lista.appendChild(b);
       });
       d.conversas.forEach(function (c) {
-        var b = el('button', 'rcaes-item' + (c.nao_lidas ? ' rcaes-item-novo' : ''));
+        var b = el('button', 'rcaes-item' + (c.nao_lidas || c.resgate === 'outro' ? ' rcaes-item-novo' : ''));
         b.type = 'button';
         b.appendChild(el('span', 'rcaes-avatar', inicial(c.nome)));
         var corpoItem = el('span', 'rcaes-item-corpo');
         corpoItem.appendChild(el('span', 'rcaes-item-nome', c.nome + (c.tipo ? ' · ' + c.tipo : '')));
-        corpoItem.appendChild(el('span', 'rcaes-item-prev' + (c.digitando ? ' rcaes-item-digitando' : ''), c.digitando ? 'digitando…' : c.ultima));
+        var previa = c.digitando ? 'digitando…' : (c.resgate === 'outro' ? 'Pediu para marcar como resolvido' : c.ultima);
+        corpoItem.appendChild(el('span', 'rcaes-item-prev' + (c.digitando ? ' rcaes-item-digitando' : '') + (!c.digitando && c.resgate === 'outro' ? ' rcaes-item-alerta' : ''), previa));
         b.appendChild(corpoItem);
         var direita = el('span', 'rcaes-item-direita');
         direita.appendChild(el('span', 'rcaes-item-meta', c.quando));
