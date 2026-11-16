@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Reencontro de Cães
  * Description: Reconhecimento de cães perdidos por similaridade visual (IA): cadastro, busca assíncrona, aviso por e-mail e contato seguro entre tutores. Todas as telas são shortcodes.
- * Version: 1.4.3
+ * Version: 1.4.8
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * Author: William de Souza Colodro
@@ -12,7 +12,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'RCAES_VERSION', '1.4.3' );
+define( 'RCAES_VERSION', '1.4.8' );
 define( 'RCAES_FILE', __FILE__ );
 define( 'RCAES_DIR', plugin_dir_path( __FILE__ ) );
 define( 'RCAES_URL', plugin_dir_url( __FILE__ ) );
